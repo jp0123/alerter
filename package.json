@@ -4,13 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "greeting": "echo 'Hello, World!'"
+    "greeting": "echo 'Hello, World!'",
+    "orders": "node orders.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "node-fetch": "^2.2.0"
+    "node-fetch": "^2.2.0",
+    "nodemon": "^1.18.3"
+  },
+  "dependencies": {
+    "dotenv-safe": "^6.0.0",
+    "express": "^4.16.3"
   }
 }
