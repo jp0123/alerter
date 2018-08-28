@@ -21,18 +21,37 @@ const ordersAPI = fetch(url, fetch_object)
         return jsonResponse;
     });
 
-ordersAPI.then(orders => {
-    const ordersAPI = orders.result;
-    const pendingOrders = ordersAPI.filter(order => {
-        return order.status === 'pending';
+ordersAPI
+    // Status check | Get only pending or completed orders
+    .then(orders => {
+        const ordersAPI = orders.result;
+        const pendingOrders = ordersAPI.filter(order => {
+            return order.status === 'pending';
+        })
+        const completedOrders = ordersAPI.filter(order => {
+            return order.status === 'completed';
+        })
+        const successfulOrders = [];
+        successfulOrders.push(...pendingOrders, ...completedOrders);
+        return successfulOrders;
     })
-    const completedOrders = ordersAPI.filter(order => {
-        return order.status === 'completed';
+    // Time check | Are orders coming in?
+    .then(orders => {
+        const current_time = Date.now();
+        const time_frame = Number(process.env.TIME_FRAME);
+        orders.forEach(order => {
+            const order_id = order.id_orders;
+            const order_processed = Date.parse(order.created_at)
+            const delta = current_time - order_processed
+            const deltaInMinutes = Math.round((delta / 1000 / 60));
+            if (time_frame < delta) {
+                return process.exit(1)
+            }
+            console.log(`Order ${order_id} has been successfully processed ${deltaInMinutes} minutes ago.`)
+        })
     })
-    const successfulOrders = [];
-    successfulOrders.push(...pendingOrders, ...completedOrders);
-    return successfulOrders;
-})
+
+
 
 
 
