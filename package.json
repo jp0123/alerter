@@ -1,12 +1,24 @@
 {
-  "name": "Alerter",
+  "name": "alerter",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "greeting": "echo 'Hello, World!'",
+    "orders": "node orders.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "node-fetch": "^2.2.0",
+    "nodemon": "^1.18.3"
+  },
+  "dependencies": {
+    "dotenv-safe": "^6.0.0",
+    "express": "^4.16.3"
+  }
 }
