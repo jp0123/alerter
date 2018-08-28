@@ -18,5 +18,5 @@ fetch(url, fetch_object)
         return response.json();
     })
     .then(ordersAPI => {
-        console.log(ordersAPI);
+        return ordersAPI;
     });
