@@ -1,6 +1,6 @@
 # Alerter
 
-An alert script that diagnoses whether orders have been successfully purchased or processed within a specified time frame.
+An alert script that diagnoses whether orders have been successfully purchased or processed within a specified time frame. It will take appropriate action based on the result.
 
 # Setup
 1. `npm install` in root directory.
@@ -28,4 +28,3 @@ The script will:
     * Logs a 'warning' or 'success' message in the console. 
     * If no orders have been successfully purchased or processed within a specified time limit, the script will execute `process.end(1)`.
 
-    
