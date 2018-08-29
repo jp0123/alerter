@@ -1,7 +1,7 @@
 require('dotenv-safe').config();
 const fetch = require('node-fetch')
 
-const url = `https://test-api.luxgroup.com/api/orders?booking_numbers=&page=1&per_page=10&brand=${process.env.BRAND}`;
+const url = `${process.env.URL}${process.env.BRAND}`;
 
 const fetch_object = {
     method: "GET",
@@ -26,10 +26,10 @@ ordersAPI
     .then(orders => {
         const ordersAPI = orders.result;
         const pendingOrders = ordersAPI.filter(order => {
-            return order.status === 'pending';
+            return order.status === `${process.env.ORDER_STATUS_PENDING}`;
         })
         const completedOrders = ordersAPI.filter(order => {
-            return order.status === 'completed';
+            return order.status === `${process.env.ORDER_STATUS_COMPLETED}`;
         })
         const successfulOrders = [];
         successfulOrders.push(...pendingOrders, ...completedOrders);
@@ -41,7 +41,7 @@ ordersAPI
         const timeFrame = Number(process.env.TIME_FRAME); // 15 minutes in milliseconds
         const timeFrameInMinutes = Math.round((timeFrame / 1000 / 60));
         let successfulOrdersWithinTimeFrameCounter = 0;
-        // Check order | Has it been ordered within the allowed time frame?
+        // Check order | Has it been ordered within the specified time frame?
         orders.forEach(order => {
             const orderProcessed = Date.parse(order.created_at);
             const delta = currentTime - orderProcessed; // Milliseconds
@@ -49,11 +49,11 @@ ordersAPI
                 successfulOrdersWithinTimeFrameCounter += 1;
             }
         })
-        // Diagnosis | Are successful orders coming in within the time frame?
+        // Diagnosis | Are successful orders coming in the specified time frame?
         if (successfulOrdersWithinTimeFrameCounter === 0) {
             console.log(`WARNING: No orders have been successfully purchased or processed for at least ${timeFrameInMinutes} minutes!`);
             process.exit(1);
         } else {
-            console.log(`SUCCESS: ${successfulOrdersWithinTimeFrameCounter} of the last 10 orders have been successfully purchased or processed within the ${timeFrameInMinutes} minutes.`)
+            console.log(`SUCCESS: ${successfulOrdersWithinTimeFrameCounter} of the last 10 orders have been successfully purchased or processed within the last ${timeFrameInMinutes} minutes.`)
         }
-    })
+    });
